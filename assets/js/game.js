@@ -5,9 +5,22 @@ var randomNumber = function(min, max){
     return value;
 };
 
+var getPlayerName = function() {
+    var name ="";
+
+    //
+    while (name === "" || name === null){
+        name = prompt("what is your robot's name?");
+    }
+    //
+
+    console.log("Your robot's naem is " + name);
+    return name;
+    
+};
 
 var playerInfo = {
-  name: window.prompt("what is your robot's name?"),
+  name: getPlayerName(),
   health: 100,
   attack: 10,
   money: 10,
@@ -15,21 +28,44 @@ var playerInfo = {
       this.health = 100;
       this.money = 10;
       this.attack = 10;
-  }
+  },//coma!
+  refilHealth: function(){
+      if (this.money >= 7){
+          window.alert("refilling player's health by 20 for 6 dollars.");
+        this.health += 20;
+        this.money -= 7;
+      }
+      else{
+          window.alert("You don't have enough money!");
+      }
+  }, //coma!
+  upgradeAttack: function(){
+      if (this.money >= 7){
+          window.alert("Upgrading player's attack by 6 for 7 dollars.")
+        this.attack += 6;
+        this.money -= 7;
+      }
+      else{
+          window.alert("You don't have enough money!");
+      }
+  },
 };
  
 var enemyInfo = [
     {
         name: "Roberto",
-        attack: randomNumber(10,14)
+        attack: randomNumber(10,14),
+        health: 50,
     },
     {
         name: "Amy Android", 
-        attack: randomNumber(10,14)
+        attack: randomNumber(10,14),
+        health: 50,
     },
     {
         name : "Robo Trumble",
-        attack: randomNumber(10,14)
+        attack: randomNumber(10,14),
+        health: 50,
     }
 ];
 
@@ -37,7 +73,7 @@ var enemyHealth = 50;
 
 var fight = function(enemy) {
     //repeat and execute as long as the enemy-robot is alive
-    while(playerInfo.health > 0 && enemy.health > 0) {
+    while(playerInfo.health > 0 && enemyInfo.health > 0) {
 
         
 
@@ -144,20 +180,21 @@ var startGame = function() {
             window.alert("You have lost your robot in battle Game Over!");
             break;
         }
+
     }
     //after the loop ends, player is either out health or enemies to fight, so run the endGame function
-    endGame();
+    
     shop();
 };
 
 
 var endGame = function(){
     //if player is still alive, player wins!
-    if (playerInfo.health > 0) {
-        window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + ". ");
+    if (playerInfo.health < 0) {
+        window.alert("You've lost your robot in battle. ");
     }
     else {
-        window.alert("You've lost your robot in battle. ");
+        window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + ". ");
     }
 
     //ask player if they'd like to play again
@@ -184,32 +221,12 @@ var shop = function(){
         switch(shopOptionPrompt){
             case "REFILL": //new case
             case "refill":
-                if (playerInfo.money >= 7){
-                    window.alert("Refilling player's health by 20 for 7 dollars.");
-
-                    //increase health and decrease money
-                    playerInfo.health = playerInfo.health + 20;
-                    playerInfo.money = playerInfo.money - 7;
-                } 
-                else {
-                    window.alert("You don't have enough money!");
-                }
-
+                playerInfo.refilHealth();
                 break;
 
             case "UPGRADE": //new case    
             case"upgrade":
-                if(playerInfo.money >= 7){
-                    window.alert("Upgradeing player's attack by 6 for 7 dollars.");
-
-                    //increase attack and decrease money
-                    playerInfo.attack = playerInfo.attack + 6;
-                    playerInfo.money = playerInfo.money - 7;
-                } 
-                else {
-                    window.alert("You don't have enough money!");
-                }
-
+                playerInfo.upgradeAttack
                 break;
             
             case "LEAVE":    
@@ -231,3 +248,4 @@ var shop = function(){
 };
 
 startGame();
+
